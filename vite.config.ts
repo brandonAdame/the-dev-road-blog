@@ -16,6 +16,7 @@ const config = defineConfig({
       rollupConfig: {
         external: [/^@sentry\//],
       },
+      preset: "netlify",
     }),
     tailwindcss(),
     tanstackStart(),
