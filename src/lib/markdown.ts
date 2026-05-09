@@ -1,5 +1,13 @@
-import * as Marked from "marked";
 import Prism from "prismjs";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-tsx";
+import "prismjs/components/prism-markup";
+import "prismjs/components/prism-css";
+import "prismjs/components/prism-bash";
+import "prismjs/components/prism-json";
+import * as Marked from "marked";
 
 export interface MarkdownHeading {
   id: string;
@@ -40,7 +48,7 @@ class DefaultRenderer extends Marked.Renderer {
     const language = lang ? lang.toLowerCase() : "plaintext";
     const grammar = Prism.languages[language] || Prism.languages.plaintext;
     const highlighted = Prism.highlight(text, grammar, language);
-    return `<pre class="language-${language}"><code>${highlighted}</code></pre>`;
+    return `<pre class="highlight highlight-source-${lang} notranslate language-${language}"><code>${highlighted}</code></pre>`;
   }
 }
 
