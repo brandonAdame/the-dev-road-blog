@@ -6,12 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "#/components/ui/card";
-import { getPostsServerFn } from "#/server/functions";
+import { postsQueryOptions } from "#/ts-query/posts";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/blog/")({
   component: RouteComponent,
-  loader: async () => await getPostsServerFn(),
+  loader: async ({ context }) =>
+    await context.queryClient.ensureQueryData(postsQueryOptions()),
 });
 
 function RouteComponent() {
@@ -21,7 +22,7 @@ function RouteComponent() {
     <div className="flex flex-col gap-5 ml-80 mr-80 my-10">
       <h1 className="text-3xl font-bold mb-4">Blog Posts</h1>
       <div className="flex flex-col gap-5 w-lg">
-        {data.length &&
+        {data &&
           data.map((post: any) => (
             <Card key={post.slug}>
               <CardHeader>
@@ -29,7 +30,7 @@ function RouteComponent() {
                 <CardDescription>{post.blurb}</CardDescription>
               </CardHeader>
               <CardFooter>
-                <Link to={`/blog/${post.slug}`}>
+                <Link to={"/blog/$slug"} params={{ slug: post.slug }}>
                   <Button variant="outline">Read More</Button>
                 </Link>
               </CardFooter>

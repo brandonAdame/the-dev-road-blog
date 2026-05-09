@@ -1,0 +1,12 @@
+@import 'tailwindcss';
+
+.markdown-body {
+    word-wrap: break-word;
+    margin-left: 15rem;
+    margin-top: 2rem;
+    margin-right: 20rem;
+}
+
+.markdown-body h1 {
+    @apply text-4xl font-bold mb-4;
+}

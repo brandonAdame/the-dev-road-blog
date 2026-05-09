@@ -1,37 +1,65 @@
+import { BlogPosts } from "#/db/schema";
+import { drizzleClient } from "#/integrations/drizzle/db-client";
+import { notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { readdir } from "fs/promises";
+import { eq } from "drizzle-orm";
 import matter from "gray-matter";
-import { dirname, join } from "path";
+import { z } from "zod";
+import { renderMarkdown } from "#/lib/markdown";
 
-export const getPostsServerFn = createServerFn().handler(async () => {
-  const _dirname = dirname(new URL(import.meta.url).pathname);
-  const POST_DIR = join(_dirname, "../content/posts");
+const PostQuerySchema = z.object({
+  slug: z.string(),
+});
 
-  async function getPost(slug: string) {
-    const filePath = join(POST_DIR, `${slug}.md`);
-
-    const file = Bun.file(filePath);
-    const fileContent = await file.text();
-    const { data, content } = matter(fileContent);
-
-    return {
-      slug,
-      title: data.title,
-      blurb: data.blurb,
-      publishedAt: data.publishedAt,
-      content,
-    };
-  }
-
+export const getPosts = createServerFn().handler(async () => {
   try {
-    const postFiles = await readdir(POST_DIR);
-    return await Promise.all(
-      postFiles
-        .filter((f) => f.endsWith(".md"))
-        .map((f) => getPost(f.replace(".md", ""))),
-    );
-  } catch (error) {
-    console.error("Error reading posts:", error);
+    const resp = await drizzleClient.select().from(BlogPosts);
+
+    if (resp.length) {
+      return resp.map((post) => {
+        const { data, content } = matter(post.blog_content);
+        return {
+          slug: post.slug,
+          title: post.blog_title,
+          blurb: data.blurb,
+          publishedAt: post.created_at,
+          content,
+        };
+      });
+    }
+
     return [];
+  } catch (error) {
+    console.error("Error fetching posts:", error);
   }
 });
+
+export const getPost = createServerFn()
+  .inputValidator(PostQuerySchema)
+  .handler(async ({ data }) => {
+    try {
+      const resp = await drizzleClient
+        .select()
+        .from(BlogPosts)
+        .where(eq(BlogPosts.slug, data.slug))
+        .limit(1);
+
+      if (!resp) {
+        throw notFound({ routeId: "/blog/$slug" });
+      }
+
+      const post = resp[0];
+      const { data: frontMatterData, content } = matter(post.blog_content);
+      const html = renderMarkdown(content).html;
+
+      return {
+        title: post.blog_title,
+        blurb: frontMatterData.blurb,
+        publishedAt: post.created_at,
+        html,
+      };
+    } catch (error) {
+      console.error("Error fetching post", error);
+      throw new Error("Error fetching post");
+    }
+  });

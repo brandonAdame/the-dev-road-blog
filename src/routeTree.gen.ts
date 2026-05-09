@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 
 const AboutRoute = AboutRouteImport.update({
@@ -30,11 +29,6 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -45,14 +39,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
@@ -60,28 +52,20 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/blog/$slug' | '/demo/tanstack-query' | '/blog/'
+  fullPaths: '/' | '/about' | '/blog/$slug' | '/blog/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/blog/$slug' | '/demo/tanstack-query' | '/blog'
-  id:
-    | '__root__'
-    | '/'
-    | '/about'
-    | '/blog/$slug'
-    | '/demo/tanstack-query'
-    | '/blog/'
+  to: '/' | '/about' | '/blog/$slug' | '/blog'
+  id: '__root__' | '/' | '/about' | '/blog/$slug' | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BlogSlugRoute: typeof BlogSlugRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   BlogIndexRoute: typeof BlogIndexRoute
 }
 
@@ -108,13 +92,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -129,7 +106,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BlogSlugRoute: BlogSlugRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport
