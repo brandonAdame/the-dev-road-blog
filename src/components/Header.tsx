@@ -7,12 +7,11 @@ export default function Header() {
       <nav className="page-wrap flex flex-wrap items-center gap-x-3 gap-y-2 py-3 sm:py-4">
         <div className="ml-auto flex items-center gap-1.5 sm:ml-0 sm:gap-2">
           <a
-            href="https://github.com/TanStack"
+            href="https://github.com/brandonAdame"
             target="_blank"
             rel="noreferrer"
             className="hidden rounded-xl p-2 text-(--sea-ink-soft) transition hover:bg-(--link-bg-hover) hover:text-(--sea-ink) sm:block"
           >
-            <span className="sr-only">Go to TanStack GitHub</span>
             <svg viewBox="0 0 16 16" aria-hidden="true" width="24" height="24">
               <path
                 fill="currentColor"
