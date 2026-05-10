@@ -5,7 +5,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
 import matter from "gray-matter";
 import { z } from "zod";
-import { renderMarkdown } from "#/lib/markdown";
 
 const PostQuerySchema = z.object({
   slug: z.string(),
@@ -50,13 +49,12 @@ export const getPost = createServerFn()
 
       const post = resp[0];
       const { data: frontMatterData, content } = matter(post.blog_content);
-      const html = renderMarkdown(content).html;
 
       return {
         title: post.blog_title,
         blurb: frontMatterData.blurb,
         publishedAt: post.created_at,
-        html,
+        content,
       };
     } catch (error) {
       console.error("Error fetching post", error);
