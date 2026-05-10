@@ -21,7 +21,6 @@ export const getPosts = createServerFn().handler(async () => {
           slug: post.slug,
           title: post.blog_title,
           blurb: data.blurb,
-          publishedAt: post.created_at,
           content,
         };
       });
@@ -53,7 +52,6 @@ export const getPost = createServerFn()
       return {
         title: post.blog_title,
         blurb: frontMatterData.blurb,
-        publishedAt: post.created_at,
         content,
       };
     } catch (error) {

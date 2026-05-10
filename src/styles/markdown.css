@@ -8,5 +8,6 @@
 }
 
 .markdown-body h1 {
-    @apply text-4xl font-bold mb-4;
+    @apply text-4xl font-bold mb-4 tracking-wide;
+    font-family: var(--font-made-carving)
 }

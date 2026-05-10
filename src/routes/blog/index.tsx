@@ -20,7 +20,9 @@ function RouteComponent() {
 
   return (
     <div className="flex flex-col gap-5 ml-80 mr-80 my-10">
-      <h1 className="text-3xl font-bold mb-4">Blog Posts</h1>
+      <h1 className="display-title text-4xl font-bold mb-4 leading-[1.02] tracking-wide">
+        Blog Posts
+      </h1>
       <div className="flex flex-col gap-5 w-lg">
         {data &&
           data.map((post: any) => (
