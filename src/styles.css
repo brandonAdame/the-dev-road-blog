@@ -163,8 +163,8 @@
 
 @font-face {
   font-family: 'MadeCarving';
-  src: url('/public/fonts/made-carving-regular.woff2') format('woff2'),
-    url('/public/fonts/made-carving-regular.woff') format('woff');
+  src: url('/fonts/made-carving-regular.woff2') format('woff2'),
+    url('/fonts/made-carving-regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
